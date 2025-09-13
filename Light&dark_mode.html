@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Light & Dark Mode Demo</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, sans-serif;
+      transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Light mode (default) */
+    body.light {
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    /* Dark mode */
+    body.dark {
+      background: #1e1e1e;
+      color: #f5f5f5;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    body.light .container {
+      background: #fff;
+    }
+
+    body.dark .container {
+      background: #2b2b2b;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light button {
+      background: #222;
+      color: #fff;
+    }
+
+    body.dark button {
+      background: #fff;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌞 Light & Dark Mode Demo 🌙</h1>
+    <p>Click the button below to switch modes.</p>
+    <button id="theme-toggle">Dark Mode</button>
+  </div>
+
+  <script>
+    const body = document.body;
+    const toggleBtn = document.getElementById("theme-toggle");
+
+    // Function to update button text
+    function updateButtonText() {
+      if (body.classList.contains("dark")) {
+        toggleBtn.textContent = "Light Mode"; // show opposite option
+      } else {
+        toggleBtn.textContent = "Dark Mode";
+      }
+    }
+
+    // Check localStorage for theme
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme) {
+      body.classList.add(savedTheme);
+    } else {
+      // Default to system preference
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      body.classList.add(prefersDark ? "dark" : "light");
+    }
+
+    // Set correct text on load
+    updateButtonText();
+
+    toggleBtn.addEventListener("click", () => {
+      if (body.classList.contains("light")) {
+        body.classList.replace("light", "dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        body.classList.replace("dark", "light");
+        localStorage.setItem("theme", "light");
+      }
+      updateButtonText(); // update text after switching
+    });
+  </script>
+</body>
+</html>
+
